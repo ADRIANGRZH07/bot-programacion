@@ -6,7 +6,7 @@ def run_scraper():
     print("Recolectando noticias...")
     hoy = datetime.today().strftime('%Y-%m-%d')
     archivo_salida = f"data/noticias_{hoy}.json"
-    scrap_devto(filename=archivo_salida)
+    scrap_devto()
     print(f"Noticias guardadas en: {archivo_salida}")
 
 def main():
