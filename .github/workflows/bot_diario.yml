@@ -1,0 +1,31 @@
+name: Ejecutar bot diario
+
+on:
+  schedule:
+    - cron: '0 14 * * *'  # 14:00 UTC = 8:00 AM México
+  workflow_dispatch:       # Permite ejecutarlo manualmente si quieres
+
+jobs:
+  ejecutar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Ejecutar bot diario
+        run: python daily_task.py
+
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
