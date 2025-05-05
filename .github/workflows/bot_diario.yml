@@ -1,16 +1,16 @@
-name: Ejecutar bot diario
+name: Ejecutar tarea diaria del bot
 
 on:
   schedule:
-    - cron: '0 14 * * *'  # 14:00 UTC = 8:00 AM México
-  workflow_dispatch:       # Permite ejecutarlo manualmente si quieres
+    - cron: '0 14 * * *'  # 8am hora de México (CDMX es UTC-6)
+  workflow_dispatch:
 
 jobs:
-  ejecutar:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clonar repositorio
+      - name: Clonar el repositorio
         uses: actions/checkout@v3
 
       - name: Configurar Python
@@ -23,9 +23,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Ejecutar bot diario
-        run: python daily_task.py
+      - name: Instalar navegadores de Playwright
+        run: |
+          playwright install --with-deps
 
-        env:
-          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      - name: Ejecutar tarea diaria
+        run: python daily_task.py
